@@ -30,7 +30,7 @@ namespace ExcelMapper
 
             var classes = assembly
                 .GetTypes()
-                .Where(t => t.IsAssignableFrom(typeof(ExcelClassMap)) && t.Namespace == namespaceString);
+                .Where(t => (t.IsAssignableFrom(typeof(ExcelClassMap)) || t.IsAssignableToGenericType(typeof(ExcelClassMap<>))) && t.Namespace == namespaceString);
 
             var objects = classes.Select(Activator.CreateInstance).OfType<ExcelClassMap>().ToList();
 
@@ -41,6 +41,20 @@ namespace ExcelMapper
                 importer.Configuration.RegisterClassMap(o);
 
             return objects;
+        }
+
+        internal static bool IsAssignableToGenericType(this Type givenType, Type genericType)
+        {
+            var interfaceTypes = givenType.GetInterfaces();
+
+            if (interfaceTypes.Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType))
+                return true;
+
+            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+                return true;
+
+            var baseType = givenType.BaseType;
+            return baseType != null && IsAssignableToGenericType(baseType, genericType);
         }
     }
 }
