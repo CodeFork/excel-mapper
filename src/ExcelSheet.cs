@@ -51,20 +51,18 @@ namespace ExcelMapper
         public ExcelHeading ReadHeading()
         {
             if (!HasHeading)
-            {
                 throw new ExcelMappingException($"Sheet \"{Name}\" has no heading.");
-            }
 
             if (Heading != null)
-            {
                 throw new ExcelMappingException($"Already read heading in sheet \"{Name}\".");
-            }
 
             if (!Reader.Read())
-            {
                 throw new ExcelMappingException($"Sheet \"{Name}\" has no rows.");
-            }
-
+                
+            var isRead = true;
+            while (IsRowEmpty() && isRead)
+                isRead = Reader.Read();
+            
             var heading = new ExcelHeading(Reader);
             Heading = heading;
             return heading;
@@ -80,14 +78,10 @@ namespace ExcelMapper
         public IEnumerable<T> ReadRows<T>()
         {
             if (HasHeading && Heading == null)
-            {
                 ReadHeading();
-            }
 
             while (TryReadRow(out T row))
-            {
                 yield return row;
-            }
         }
 
         /// <summary>
@@ -119,19 +113,20 @@ namespace ExcelMapper
         public bool TryReadRow<T>(out T value)
         {
             value = default(T);
-            if (!Reader.Read())
-            {
-                return false;
-            }
 
+            if (!Reader.Read())
+                return false;
+
+            while (IsRowEmpty())
+                if (!Reader.Read())
+                    return false;
+            
             CurrentIndex++;
 
             if (!Configuration.TryGetClassMap<T>(out ExcelClassMap classMap))
             {
                 if (!AutoMapper.AutoMapClass(FallbackStrategy.ThrowIfPrimitive, out ExcelClassMap<T> autoClassMap))
-                {
                     throw new ExcelMappingException($"Cannot auto-map type \"{typeof(T)}\".");
-                }
 
                 classMap = autoClassMap;
                 Configuration.RegisterClassMap(autoClassMap);
@@ -139,6 +134,17 @@ namespace ExcelMapper
 
             value = (T)classMap.Execute(this, CurrentIndex, Reader);
             return true;
+        }
+            
+        public bool IsRowEmpty()
+        {
+            var empty = true;
+            for (var i = 0; i < Reader.FieldCount; i++)
+            {
+                if (Reader[i] != null)
+                    empty = false;
+            }
+            return empty;
         }
     }
 }
