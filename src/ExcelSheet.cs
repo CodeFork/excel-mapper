@@ -123,7 +123,7 @@ namespace ExcelMapper
             
             CurrentIndex++;
 
-            if (!Configuration.TryGetClassMap<T>(out ExcelClassMap classMap))
+            if (!Configuration.TryGetClassMap<T>(out var classMap))
             {
                 if (!AutoMapper.AutoMapClass(FallbackStrategy.ThrowIfPrimitive, out ExcelClassMap<T> autoClassMap))
                     throw new ExcelMappingException($"Cannot auto-map type \"{typeof(T)}\".");

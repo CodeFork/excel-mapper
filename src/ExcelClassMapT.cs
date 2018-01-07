@@ -46,10 +46,10 @@ namespace ExcelMapper
         /// <returns>The map for the given property or field.</returns>
         public SingleExcelPropertyMap<TProperty> Map<TProperty>(Expression<Func<T, TProperty>> expression)
         {
-            MemberExpression memberExpression = GetMemberExpression(expression);
-            MemberInfo member = memberExpression.Member;
+            var memberExpression = GetMemberExpression(expression);
+            var member = memberExpression.Member;
 
-            bool canMap = member.AutoMap(EmptyValueStrategy, out SingleExcelPropertyMap<TProperty> mapping);
+            var canMap = member.AutoMap(EmptyValueStrategy, out SingleExcelPropertyMap<TProperty> mapping);
             if (!canMap)
             {
                 throw new ExcelMappingException($"Don't know how to map type {typeof(TProperty)}.");
@@ -68,7 +68,7 @@ namespace ExcelMapper
         /// <returns>The map for the given property or field.</returns>
         public EnumerableExcelPropertyMap<TProperty> Map<TProperty>(Expression<Func<T, IEnumerable<TProperty>>> expression)
         {
-            MemberExpression memberExpression = GetMemberExpression(expression);
+            var memberExpression = GetMemberExpression(expression);
             var mapping = GetMultiMapping<TProperty>(memberExpression.Member);
 
             AddMapping(mapping, expression);
@@ -84,7 +84,7 @@ namespace ExcelMapper
         /// <returns>The map for the given property or field.</returns>
         public EnumerableExcelPropertyMap<TProperty> Map<TProperty>(Expression<Func<T, ICollection<TProperty>>> expression)
         {
-            MemberExpression memberExpression = GetMemberExpression(expression);
+            var memberExpression = GetMemberExpression(expression);
             var mapping = GetMultiMapping<TProperty>(memberExpression.Member);
 
             AddMapping(mapping, expression);
@@ -100,7 +100,7 @@ namespace ExcelMapper
         /// <returns>The map for the given property or field.</returns>
         public EnumerableExcelPropertyMap<TProperty> Map<TProperty>(Expression<Func<T, IList<TProperty>>> expression)
         {
-            MemberExpression memberExpression = GetMemberExpression(expression);
+            var memberExpression = GetMemberExpression(expression);
             var mapping = GetMultiMapping<TProperty>(memberExpression.Member);
 
             AddMapping(mapping, expression);
@@ -116,7 +116,7 @@ namespace ExcelMapper
         /// <returns>The map for the given property or field.</returns>
         public EnumerableExcelPropertyMap<TProperty> Map<TProperty>(Expression<Func<T, List<TProperty>>> expression)
         {
-            MemberExpression memberExpression = GetMemberExpression(expression);
+            var memberExpression = GetMemberExpression(expression);
             var mapping = GetMultiMapping<TProperty>(memberExpression.Member);
 
             AddMapping(mapping, expression);
@@ -132,7 +132,7 @@ namespace ExcelMapper
         /// <returns>The map for the given property or field.</returns>
         public EnumerableExcelPropertyMap<TProperty> Map<TProperty>(Expression<Func<T, TProperty[]>> expression)
         {
-            MemberExpression memberExpression = GetMemberExpression(expression);
+            var memberExpression = GetMemberExpression(expression);
             var mapping = GetMultiMapping<TProperty>(memberExpression.Member);
 
             AddMapping(mapping, expression);
@@ -148,8 +148,8 @@ namespace ExcelMapper
         /// <returns>The map for the given property or field.</returns>
         public ObjectExcelPropertyMap<TProperty> MapObject<TProperty>(Expression<Func<T, TProperty>> expression)
         {
-            MemberExpression memberExpression = GetMemberExpression(expression);
-            MemberInfo member = memberExpression.Member;
+            var memberExpression = GetMemberExpression(expression);
+            var member = memberExpression.Member;
 
             if (!member.AutoMapObject(EmptyValueStrategy, out ObjectExcelPropertyMap<TProperty> mapping))
             {
@@ -182,7 +182,7 @@ namespace ExcelMapper
 
         protected internal void AddMapping<TProperty>(ExcelPropertyMap mapping, Expression<Func<T, TProperty>> expression)
         {
-            Expression expressionBody = expression.Body;
+            var expressionBody = expression.Body;
             var expressions = new Stack<MemberExpression>();
             while (true)
             {

@@ -37,11 +37,11 @@ namespace ExcelMapper
         /// <returns>An object created from one or more cells in the row.</returns>
         internal object Execute(ExcelSheet sheet, int rowIndex, IExcelDataReader reader)
         {
-            object instance = Activator.CreateInstance(Type);
+            var instance = Activator.CreateInstance(Type);
 
-            foreach (ExcelPropertyMap pipeline in Mappings)
+            foreach (var pipeline in Mappings)
             {
-                object propertyValue = pipeline.GetPropertyValue(sheet, rowIndex, reader);
+                var propertyValue = pipeline.GetPropertyValue(sheet, rowIndex, reader);
                 pipeline.SetPropertyFactory(instance, propertyValue);
             }
 
@@ -57,7 +57,7 @@ namespace ExcelMapper
         /// <param name="memberExpressions">A stack of each MemberExpression in the list of member access expressions.</param>
         protected internal void CreateObjectMap(ExcelPropertyMap propertyMapping, Stack<MemberExpression> memberExpressions)
         {
-            MemberExpression memberExpression = memberExpressions.Pop();
+            var memberExpression = memberExpressions.Pop();
             if (memberExpressions.Count == 0)
             {
                 // This is the final member.
@@ -65,9 +65,9 @@ namespace ExcelMapper
                 return;
             }
 
-            Type memberType = memberExpression.Member.MemberType();
+            var memberType = memberExpression.Member.MemberType();
 
-            MethodInfo method = MapObjectMethod.MakeGenericMethod(memberType);
+            var method = MapObjectMethod.MakeGenericMethod(memberType);
             try
             {
                 method.Invoke(this, new object[] { propertyMapping, memberExpression, memberExpressions });
@@ -80,7 +80,7 @@ namespace ExcelMapper
 
         private void CreateObjectMapGeneric<TProperty>(ExcelPropertyMap propertyMapping, MemberExpression memberExpression, Stack<MemberExpression> memberExpressions)
         {
-            ExcelPropertyMap mapping = Mappings.FirstOrDefault(m => m.Member.Equals(memberExpression.Member));
+            var mapping = Mappings.FirstOrDefault(m => m.Member.Equals(memberExpression.Member));
 
             ObjectExcelPropertyMap<TProperty> objectPropertyMapping;
             if (mapping == null)

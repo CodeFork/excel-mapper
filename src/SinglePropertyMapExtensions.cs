@@ -118,7 +118,7 @@ namespace ExcelMapper
                 throw new ArgumentNullException(nameof(mappers));
             }
 
-            foreach (ICellValueMapper mapper in mappers)
+            foreach (var mapper in mappers)
             {
                 if (mapper == null)
                 {
@@ -126,7 +126,7 @@ namespace ExcelMapper
                 }
             }
 
-            foreach (ICellValueMapper mapper in mappers)
+            foreach (var mapper in mappers)
             {
                 propertyMap.AddCellValueMapper(mapper);
             }
@@ -213,7 +213,7 @@ namespace ExcelMapper
                 throw new ArgumentException("Formats cannot be empty.", nameof(formats));
             }
 
-            DateTimeMapper dateTimeItem = (DateTimeMapper)propertyMap.CellValueMappers.FirstOrDefault(item => item is DateTimeMapper);
+            var dateTimeItem = (DateTimeMapper)propertyMap.CellValueMappers.FirstOrDefault(item => item is DateTimeMapper);
             if (dateTimeItem == null)
             {
                 dateTimeItem = new DateTimeMapper();

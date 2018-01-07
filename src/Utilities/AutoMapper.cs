@@ -26,12 +26,12 @@ namespace ExcelMapper.Utilities
                 return true;
             }
 
-            if (member.MemberType().GetElementTypeOrEnumerableType(out Type elementType))
+            if (member.MemberType().GetElementTypeOrEnumerableType(out var elementType))
             {
-                MethodInfo method = AutoMapEnumerableMethod.MakeGenericMethod(elementType);
+                var method = AutoMapEnumerableMethod.MakeGenericMethod(elementType);
 
                 var parameters = new object[] { member, emptyValueStrategy, null };
-                bool result = (bool)method.Invoke(null, parameters);
+                var result = (bool)method.Invoke(null, parameters);
                 if (result)
                 {
                     mapping = (ExcelPropertyMap)parameters[2];
@@ -66,9 +66,9 @@ namespace ExcelMapper.Utilities
 
         private static bool AutoMap(this Type memberType, FallbackStrategy emptyValueStrategy, out ICellValueMapper mapper, out IFallbackItem emptyFallback, out IFallbackItem invalidFallback)
         {
-            Type type = memberType.GetNullableTypeOrThis(out bool isNullable);
+            var type = memberType.GetNullableTypeOrThis(out var isNullable);
 
-            Type[] interfaces = type.GetTypeInfo().ImplementedInterfaces.ToArray();
+            var interfaces = type.GetTypeInfo().ImplementedInterfaces.ToArray();
 
             IFallbackItem ReconcileFallback(FallbackStrategy strategyToPursue, bool empty)
             {
@@ -139,8 +139,8 @@ namespace ExcelMapper.Utilities
 
         public static bool AutoMapEnumerable<T>(this MemberInfo member, FallbackStrategy emptyValueStrategy, out EnumerableExcelPropertyMap<T> map)
         {
-            Type rawType = member.MemberType();
-            TypeInfo rawTypeInfo = rawType.GetTypeInfo();
+            var rawType = member.MemberType();
+            var rawTypeInfo = rawType.GetTypeInfo();
 
             if (!member.AutoMap(emptyValueStrategy, out SingleExcelPropertyMap<T> elementMapping))
             {
@@ -185,7 +185,7 @@ namespace ExcelMapper.Utilities
 
         public static bool AutoMapClass<T>(FallbackStrategy emptyValueStrategy, out ExcelClassMap<T> classMap)
         {
-            Type type = typeof(T);
+            var type = typeof(T);
 
             if (type.GetTypeInfo().IsInterface)
             {
@@ -197,13 +197,13 @@ namespace ExcelMapper.Utilities
             IEnumerable<MemberInfo> properties = type.GetRuntimeProperties().Where(p => p.CanWrite);
             IEnumerable<MemberInfo> fields = type.GetRuntimeFields().Where(f => f.IsPublic);
 
-            foreach (MemberInfo member in properties.Concat(fields))
+            foreach (var member in properties.Concat(fields))
             {
-                Type memberType = member.MemberType();
-                MethodInfo method = MappingMethod.MakeGenericMethod(memberType);
+                var memberType = member.MemberType();
+                var method = MappingMethod.MakeGenericMethod(memberType);
 
                 var parameters = new object[] { member, emptyValueStrategy, null };
-                bool result = (bool)method.Invoke(null, parameters);
+                var result = (bool)method.Invoke(null, parameters);
                 if (!result)
                 {
                     classMap = null;

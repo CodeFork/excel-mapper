@@ -19,9 +19,9 @@ namespace ExcelMapper.Mappings.MultiItems
 
         protected override object CreateFromElements(IEnumerable<T> elements)
         {
-            ICollection<T> value = (ICollection<T>)Activator.CreateInstance(CollectionType);
+            var value = (ICollection<T>)Activator.CreateInstance(CollectionType);
 
-            foreach (T element in elements)
+            foreach (var element in elements)
             {
                 value.Add(element);
             }

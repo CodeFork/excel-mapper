@@ -30,9 +30,7 @@ namespace ExcelMapper
         public ExcelImporter(Stream stream)
         {
             if (stream == null)
-            {
                 throw new ArgumentNullException(nameof(stream));
-            }
 
             Reader = ExcelReaderFactory.CreateReader(stream);
         }
@@ -58,7 +56,7 @@ namespace ExcelMapper
         /// <returns>A lazily evaluated list of each sheet in the document.</returns>
         public IEnumerable<ExcelSheet> ReadSheets()
         {
-            while (TryReadSheet(out ExcelSheet sheet))
+            while (TryReadSheet(out var sheet))
             {
                 yield return sheet;
             }
@@ -71,7 +69,7 @@ namespace ExcelMapper
         /// <returns>The next sheet in the document.</returns>
         public ExcelSheet ReadSheet()
         {
-            if (!TryReadSheet(out ExcelSheet sheet))
+            if (!TryReadSheet(out var sheet))
             {
                 throw new ExcelMappingException("No more sheets.");
             }

@@ -33,7 +33,7 @@ namespace ExcelMapper.Mappings.Readers
                 throw new ArgumentException("Column indices cannot be empty.", nameof(columnIndices));
             }
 
-            foreach (int columnIndex in columnIndices)
+            foreach (var columnIndex in columnIndices)
             {
                 if (columnIndex < 0)
                 {

@@ -61,12 +61,12 @@ namespace ExcelMapper
 
         public override object GetPropertyValue(ExcelSheet sheet, int rowIndex, IExcelDataReader reader)
         {
-            ReadCellValueResult[] values = ColumnsReader.GetValues(sheet, rowIndex, reader).ToArray();
+            var values = ColumnsReader.GetValues(sheet, rowIndex, reader).ToArray();
             var elements = new List<T>(values.Length);
 
-            foreach (ReadCellValueResult value in values)
+            foreach (var value in values)
             {
-                T elementValue = (T)ElementMap.GetPropertyValue(sheet, rowIndex, reader, value);
+                var elementValue = (T)ElementMap.GetPropertyValue(sheet, rowIndex, reader, value);
                 elements.Add(elementValue);
             }
 

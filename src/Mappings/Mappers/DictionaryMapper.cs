@@ -31,7 +31,7 @@ namespace ExcelMapper.Mappings.Mappers
         public PropertyMapperResultType GetProperty(ReadCellValueResult readResult, ref object value)
         {
             // If we didn't find anything, keep going. This is not necessarily a fatal error.
-            if (!MappingDictionary.TryGetValue(readResult.StringValue, out T result))
+            if (!MappingDictionary.TryGetValue(readResult.StringValue, out var result))
             {
                 return PropertyMapperResultType.Continue;
             }

@@ -45,7 +45,7 @@ namespace ExcelMapper.Mappings.Mappers
 
         public PropertyMapperResultType GetProperty(ReadCellValueResult readResult, ref object value)
         {
-            if (!DateTime.TryParseExact(readResult.StringValue, Formats, Provider, Style, out DateTime result))
+            if (!DateTime.TryParseExact(readResult.StringValue, Formats, Provider, Style, out var result))
             {
                 return PropertyMapperResultType.Invalid;
             }

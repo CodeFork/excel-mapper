@@ -17,20 +17,16 @@ namespace ExcelMapper
             var nameMapping = new Dictionary<string, int>(reader.FieldCount);
             var columnNames = new string[reader.FieldCount];
 
-            for (int columnIndex = 0; columnIndex < reader.FieldCount; columnIndex++)
+            for (var columnIndex = 0; columnIndex < reader.FieldCount; columnIndex++)
             {
-                string columnName = reader.GetValue(columnIndex)?.ToString();
+                var columnName = reader.GetValue(columnIndex)?.ToString();
                 if (columnName == null)
-                {
                     columnNames[columnIndex] = string.Empty;
-
-                }
                 else
                 {
                     if (nameMapping.ContainsKey(columnName))
-                    {
                         columnName += "_" + Guid.NewGuid();
-                    }
+
                     nameMapping.Add(columnName, columnIndex);
                     columnNames[columnIndex] = columnName;
                 }
@@ -57,9 +53,9 @@ namespace ExcelMapper
         /// <returns>The zero-based index of the column with the given name.</returns>
         public int GetColumnIndex(string columnName)
         {
-            if (!NameMapping.TryGetValue(columnName, out int index))
+            if (!NameMapping.TryGetValue(columnName, out var index))
             {
-                string foundColumns = string.Join(", ", NameMapping.Keys.Select(c => $"\"{c}\""));
+                var foundColumns = string.Join(", ", NameMapping.Keys.Select(c => $"\"{c}\""));
                 throw new ExcelMappingException($"Column \"{columnName}\" does not exist in [{foundColumns}]");
             }
 

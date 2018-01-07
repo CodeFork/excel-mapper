@@ -15,7 +15,7 @@ namespace ExcelMapper.Utilities
 
         public static bool ImplementsGenericInterface(this Type type, Type genericInterfaceType, out Type elementType)
         {
-            foreach (Type interfaceType in type.GetTypeInfo().ImplementedInterfaces)
+            foreach (var interfaceType in type.GetTypeInfo().ImplementedInterfaces)
             {
                 if (interfaceType.GetTypeInfo().IsGenericType && interfaceType.GetGenericTypeDefinition() == genericInterfaceType)
                 {

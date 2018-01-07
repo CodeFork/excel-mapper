@@ -7,7 +7,7 @@ namespace ExcelMapper.Utilities
     {
         public static string ArrayJoin(this IEnumerable<string> values)
         {
-            IEnumerable<string> quoted = values.Select(v => $"\"{v}\"");
+            var quoted = values.Select(v => $"\"{v}\"");
             return $"[{string.Join(", ", quoted)}]";
         }
 

@@ -9,7 +9,7 @@ namespace ExcelMapper.Mappings.Mappers
     {
         public PropertyMapperResultType GetProperty(ReadCellValueResult readResult, ref object value)
         {
-            if (!Uri.TryCreate(readResult.StringValue, UriKind.Absolute, out Uri result))
+            if (!Uri.TryCreate(readResult.StringValue, UriKind.Absolute, out var result))
             {
                 return PropertyMapperResultType.Invalid;
             }

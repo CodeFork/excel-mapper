@@ -33,7 +33,7 @@ namespace ExcelMapper.Mappings.Readers
                 throw new ArgumentException("Column names cannot be empty.", nameof(columnNames));
             }
             
-            foreach (string columnName in columnNames)
+            foreach (var columnName in columnNames)
             {
                 if (columnName == null)
                 {

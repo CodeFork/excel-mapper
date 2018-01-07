@@ -26,7 +26,7 @@ namespace ExcelMapper
                 throw new ArgumentNullException(nameof(classType));
             }
 
-            foreach (ExcelClassMap registeredMap in ClassMaps)
+            foreach (var registeredMap in ClassMaps)
             {
                 if (registeredMap.Type == classType)
                 {
@@ -53,7 +53,7 @@ namespace ExcelMapper
         /// <typeparam name="T">The type of the class map to use.</typeparam>
         public void RegisterClassMap<T>() where T : ExcelClassMap, new()
         {
-            T classMap = Activator.CreateInstance<T>();
+            var classMap = Activator.CreateInstance<T>();
             RegisterClassMap(classMap);
         }
 

@@ -20,7 +20,7 @@
                 return PropertyMapperResultType.Success;
             }
 
-            if (!bool.TryParse(readResult.StringValue, out bool result))
+            if (!bool.TryParse(readResult.StringValue, out var result))
             {
                 return PropertyMapperResultType.Invalid;
             }

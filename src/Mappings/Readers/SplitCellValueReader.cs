@@ -64,13 +64,13 @@ namespace ExcelMapper.Mappings.Readers
 
         public IEnumerable<ReadCellValueResult> GetValues(ExcelSheet sheet, int rowIndex, IExcelDataReader reader)
         {
-            ReadCellValueResult readResult = CellReader.GetValue(sheet, rowIndex, reader);
+            var readResult = CellReader.GetValue(sheet, rowIndex, reader);
             if (readResult.StringValue == null)
             {
                 return Enumerable.Empty<ReadCellValueResult>();
             }
 
-            string[] splitStringValues = readResult.StringValue.Split(Separators, Options);
+            var splitStringValues = readResult.StringValue.Split(Separators, Options);
             return splitStringValues.Select(s => new ReadCellValueResult(readResult.ColumnIndex, s));
         }
     }

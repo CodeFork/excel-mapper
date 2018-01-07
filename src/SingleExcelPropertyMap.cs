@@ -101,13 +101,13 @@ namespace ExcelMapper
 
         public override object GetPropertyValue(ExcelSheet sheet, int rowIndex, IExcelDataReader reader)
         {
-            ReadCellValueResult readResult = CellReader.GetValue(sheet, rowIndex, reader);
+            var readResult = CellReader.GetValue(sheet, rowIndex, reader);
             return GetPropertyValue(sheet, rowIndex, reader, readResult);
         }
 
         internal object GetPropertyValue(ExcelSheet sheet, int rowIndex, IExcelDataReader reader, ReadCellValueResult readResult)
         {
-            foreach (ICellValueTransformer transformer in _cellValueTransformers)
+            foreach (var transformer in _cellValueTransformers)
             {
                 readResult = new ReadCellValueResult(readResult.ColumnIndex, transformer.TransformStringValue(sheet, rowIndex, readResult));
             }
@@ -117,12 +117,12 @@ namespace ExcelMapper
                 return EmptyFallback.PerformFallback(sheet, rowIndex, readResult, Member);
             }
 
-            PropertyMapperResultType resultType = PropertyMapperResultType.Success;
+            var resultType = PropertyMapperResultType.Success;
             object value = null;
 
-            foreach (ICellValueMapper mappingItem in _cellValueMappers)
+            foreach (var mappingItem in _cellValueMappers)
             {
-                PropertyMapperResultType newResultType  = mappingItem.GetProperty(readResult, ref value);
+                var newResultType  = mappingItem.GetProperty(readResult, ref value);
                 if (newResultType == PropertyMapperResultType.Success)
                 {
                     return value;
